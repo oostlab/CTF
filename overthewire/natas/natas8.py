@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # request with basic authentication
 
-# vuln: Local file inclusion
+# http://natas8.natas.labs.overthewire.org
+
+# vuln: Base64
 
 import requests
 import re
@@ -10,18 +12,16 @@ username = 'natas8'
 password = 'DBfUBfqQG69KvJvJ1iAbMoIpwSNQ9bWe'
 
 url = f'http://{username}.natas.labs.overthewire.org/'
-#print (url)
+print (url)
 
-#d define header settings referers
-#header_settings = {
-#    "Referer" : "http://natas5.natas.labs.overthewire.org/"
-#}
-# cookies = {"loggedin": "1"}
+url = f'http://{username}.natas.labs.overthewire.org/'
 
-response = requests.get(url, auth = (username, password))
-# session = requests.Session()
-# response = session.get(url, auth = (username, password), cookies = cookies)
+session = requests.Session()
+# response = session.get(url, auth=(username, password))
+response = session.post(url, data = {"secret": "oubWYf2kBq", "submit" : "submit"}, auth=(username, password))
+content = response.text
 
-print (response.text)
-#print (re.findall(" natas8 is (.*)", response.text)[0])                                                                 
-# pw DBfUBfqQG69KvJvJ1iAbMoIpwSNQ9bWe
+print(content)
+
+# result:
+# Access granted. The password for natas9 is W0mMhUcRRnG8dcghE4qvk3JA9lGt8nDl
