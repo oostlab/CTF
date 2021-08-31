@@ -1,22 +1,28 @@
-#!/usr/bin/env python3
-# request with basic authentication
-
-# vuln: php xor
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import requests
 import re
+import urllib
+import base64
 
 username = 'natas11'
 password = 'U82q5TCMMQ9xuFoI3dYX61s7OZD9JKoK'
 
-url = f'http://{username}.natas.labs.overthewire.org/'
-#print (url)
+url = 'http://%s.natas.labs.overthewire.org/' % username
 
 session = requests.Session()
-response = requests.get(url, auth = (username, password))
-# response = requests.post(url, auth = (username, password))
+# response = session.get(url, auth = (username, password) )
+cookies = { "data" : "ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK" }
+response = session.get(url, auth = (username, password), cookies = cookies )
 
 
-print (response.text)
-#print (re.findall(" natas8 is (.*)", response.text)[0])
-# pw DBfUBfqQG69KvJvJ1iAbMoIpwSNQ9bWe
+# print base64.b64decode(urllib.unquote(session.cookies['data'])).encode('hex')
+
+
+content = response.text
+
+
+print(content)
+print("Password natas12")
+print (re.findall("The password for natas12 is\n(.*)\n<br>", response.text)[0])
